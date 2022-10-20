@@ -83,6 +83,21 @@ const AppProvider = ({ children }) => {
     nextQuestion();
   }
 
+  function handleChange(e) {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    setQuiz({ ...quiz, [name]: value });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const { amount, category, difficulty } = quiz;
+
+    const url = `${API_ENDPOINT}amount=${amount}&difficulty=${difficulty}&category=${table[category]}&type=multiple`;
+    getQuestion();
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -98,6 +113,8 @@ const AppProvider = ({ children }) => {
         closeModal,
         checkAnswer,
         nextQuestion,
+        handleChange,
+        handleSubmit,
       }}
     >
       {children}
