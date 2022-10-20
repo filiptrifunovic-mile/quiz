@@ -53,9 +53,39 @@ const AppProvider = ({ children }) => {
     }
   }
 
+  function nextQuestion() {
+    setIndex((oldIndex) => {
+      const index = oldIndex + 1;
+
+      if (index > questions.length - 1) {
+        openModal();
+        return 0;
+      } else {
+        return index;
+      }
+    });
+  }
+
+  function openModal() {
+    setIsModalOpen(true);
+  }
+
+  function closeModal() {
+    setWaiting(true);
+    setCorrect(0);
+    setIsModalOpen(false);
+  }
+
+  function checkAnswer(value) {
+    if (value) {
+      setCorrect((oldState) => oldState + 1);
+    }
+    nextQuestion();
+  }
+
   return (
-    <AppContext.Provider value="hello">
-      {{
+    <AppContext.Provider
+      value={{
         waiting,
         loading,
         questions,
@@ -64,7 +94,13 @@ const AppProvider = ({ children }) => {
         error,
         isModalOpen,
         quiz,
+        openModal,
+        closeModal,
+        checkAnswer,
+        nextQuestion,
       }}
+    >
+      {children}
     </AppContext.Provider>
   );
 };
